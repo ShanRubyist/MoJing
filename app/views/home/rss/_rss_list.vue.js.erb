@@ -1,108 +1,108 @@
 // 定时轮询未读的rss feed数量
-setInterval(function () {
-    axios.get('<%= unread_count_rss_feeds_path %>', {
-        headers: {
-            'Accept': 'application/json'
-        },
-        params: {
-            id: <%= current_user.id %>
-        }
-    })
-        .then(function (reason) {
-            app._data.unread_count = reason.data.unread_count
-        })
-        .catch(function (reason) {
-        })
-}, 5000)
+//setInterval(function () {
+//    axios.get('<%= unread_count_rss_feeds_path %>', {
+//        headers: {
+//            'Accept': 'application/json'
+//        },
+//        params: {
+//            id: <%#= current_user.id %>
+//        }
+//    })
+//        .then(function (reason) {
+//            app._data.unread_count = reason.data.unread_count
+//        })
+//        .catch(function (reason) {
+//        })
+//}, 5000)
 
 // RSS的列表组件
-Vue.component('rss-list', {
-    data: function () {
-        return {
-            rss_list_json:
-            <% rst =  @rss_list.map do |rss| %>
-            <% {title: rss.title,
-                description: rss.description.to_s,
-                pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
-                author: rss.author,
-                link: rss.link,
-                rss: rss.rss_probe_history.title,
-                rss_link: rss.rss_probe_history.link,
-                rss_description: rss.rss_probe_history.description,
-                status: rss.user_rss_feed_ships.first.unread
+//Vue.component('rss-list', {
+//    data: function () {
+//        return {
+//            rss_list_json:
+            <%# rst =  @rss_list.map do |rss| %>
+//            <% {title: rss.title,
+//                description: rss.description.to_s,
+//                pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+//                author: rss.author,
+//                link: rss.link,
+//                rss: rss.rss_probe_history.title,
+//                rss_link: rss.rss_probe_history.link,
+//                rss_description: rss.rss_probe_history.description,
+//                status: rss.user_rss_feed_ships.first.unread
                } %>
-            <% end %>
-            <%= raw(rst.to_json) %>,
-            prev: null,
-            next_page: 2,
-            spinning: false
-        }
-    },
-    methods: {
-        mark_readed: function () {
-            var that = this;
-            axios.put(window.location.href + 'rss_feeds/mark_readed',
-                {
-                    user_id: <%= current_user.id %>,
-                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
-                },
-                {
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(function (reason) {
-                    that.$message.success(reason.data.message)
-                })
-                .catch(function (reason) {
-                    that.$message.error(reason.toString());
-                })
-        },
-        is_last_read_position: function (current) {
-            // 必须是闭包函数，否则只会是false
-            return function () {
-                // 上个RSS Feed为空或未读，并且当前RSS Feed为已读
-                if ((this.prev == null || this.prev.status == true) && (current.status == false)) {
-                    this.prev = current;
-                    return true;
-                } else {
-                    this.prev = current;
-                    return false;
-                }
-            }
-        },
-        append_rss_feed: function (data) {
-            var that = this;
-            data.forEach(function (obj, index) {
-                that.rss_list_json.push(obj)
-            })
-            // console.log(this.rss_list_json)
-        },
-        go_to_read: function (link) {
-            window.open(link)
-        },
-        loadmore: function () {
-            let that = this;
-            that.spinning = true;
+            <%# end %>
+//            <%#= raw(rst.to_json) %>,
+//            prev: null,
+//            next_page: 2,
+//            spinning: false
+//        }
+//    },
+//    methods: {
+//        mark_readed: function () {
+//            var that = this;
+//            axios.put(window.location.href + 'rss_feeds/mark_readed',
+//                {
+//                    user_id: <%#= current_user.id %>,
+//                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+//                },
+//                {
+//                    headers: {
+//                        'Accept': 'application/json'
+//                    }
+//                })
+//                .then(function (reason) {
+//                    that.$message.success(reason.data.message)
+//                })
+//                .catch(function (reason) {
+//                    that.$message.error(reason.toString());
+//                })
+//        },
+//        is_last_read_position: function (current) {
+//            // 必须是闭包函数，否则只会是false
+//            return function () {
+//                // 上个RSS Feed为空或未读，并且当前RSS Feed为已读
+//                if ((this.prev == null || this.prev.status == true) && (current.status == false)) {
+//                    this.prev = current;
+//                    return true;
+//                } else {
+//                    this.prev = current;
+//                    return false;
+//                }
+//            }
+//        },
+//        append_rss_feed: function (data) {
+//            var that = this;
+//            data.forEach(function (obj, index) {
+//                that.rss_list_json.push(obj)
+//            })
+//            // console.log(this.rss_list_json)
+//        },
+//        go_to_read: function (link) {
+//            window.open(link)
+//        },
+//        loadmore: function () {
+//            let that = this;
+//            that.spinning = true;
 
-            axios.get('/rss_feeds/load_more_rss_feed',
-                {
-                    params: {
-                        user_id: <%= current_user.id %>,
-                        page: this.next_page,
-                        per: 100
-                    }
-                })
-                .then(function (reason) {
-                    that.spinning = false;
-                    that.append_rss_feed(reason.data)
-                    that.next_page += 1
-                })
-                .catch(function (reason) {
-                    that.spinning = false;
-                    that.$message.error('加载出错!')
-                })
-        },
-    },
-    template: '<%= import_partial('home/rss/rss_list_templ.html') %>'
-})
+//            axios.get('/rss_feeds/load_more_rss_feed',
+//                {
+//                    params: {
+//                        user_id: <%#= current_user.id %>,
+//                        page: this.next_page,
+//                        per: 100
+//                    }
+//                })
+//                .then(function (reason) {
+//                    that.spinning = false;
+//                    that.append_rss_feed(reason.data)
+//                    that.next_page += 1
+//                })
+//                .catch(function (reason) {
+//                    that.spinning = false;
+//                    that.$message.error('加载出错!')
+//                })
+//        },
+//    },
+//    template: '<%#= import_partial('home/rss/rss_list_templ.html') %>'
+//})

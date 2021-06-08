@@ -40,10 +40,14 @@ window.axios = axios
 import echarts from 'echarts'
 window.echarts = echarts
 
+import QRCode from 'qrcodejs2'
+window.QRCode = QRCode
+
 export default window
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.min'
 
 import 'animate.css'
+
 

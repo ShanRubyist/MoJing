@@ -24,29 +24,38 @@ Rails.application.routes.draw do
 
   resources :web_spider_settings, only: [:create, :destroy]
 
-  resources :rss_feeds, only: [] do
-    collection do
-      get :unread_count
-      put :mark_readed
-      get :load_more_rss_feed
+  scope module: 'rss' do
+    get 'rss' => 'rss#index', as: 'rss'
+
+    resources :rss_feeds, only: [] do
+      collection do
+        get :unread_count
+        put :mark_readed
+        get :load_more_rss_feed
+      end
     end
   end
 
-  resources :goods, only: [] do
-    collection do
-      get 'comments'
-      get 'prices'
-      get 'coupons'
-      get 'ads'
-      get 'names'
+  scope module: 'goods' do
+    resources :goods, only: [] do
+      collection do
+        get 'comments'
+        get 'prices'
+        get 'coupons'
+        get 'ads'
+        get 'names'
+      end
     end
   end
 
   post 'sql' => 'sql#sql'
 
-  get 'all' => 'home#all', as: 'all'
-  get 'running_jobs_count' => 'home#running_jobs_count', as: 'running_jobs_count'
-  post 'start_job' => 'home#start_job', as: 'start_job'
-  delete 'delete_job' => 'home#delete_job', as: 'delete_job'
-  get 'histories' => 'home#histories', as: 'histories'
+  get 'running_jobs_count' => 'jobs_management/jobs_management#running_jobs_count', as: 'running_jobs_count'
+  post 'start_job' => 'jobs_management/jobs_management#start_job', as: 'start_job'
+  post 'start_all_job' => 'jobs_management/jobs_management#start_all_job', as: 'start_all_job'
+  delete 'delete_job' => 'jobs_management/jobs_management#delete_job', as: 'delete_job'
+
+  get 'rss_list' => 'rss/rss_feeds#rss_list', as: 'rss_feed_rss_list'
+
+  get 'histories' => 'histories/histories#histories', as: 'histories'
 end

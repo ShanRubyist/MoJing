@@ -1,0 +1,109 @@
+<div class="app-wrapper">
+  <!--    工具栏区域-->
+  <%= render(SidebarComponent.new) %>
+
+  <!--    订阅列表区域-->
+  <%= render(CatWrapperComponent.new) %>
+
+  <!--Feed 列表区域-->
+  <%= render(ArticleListComponent.new) %>
+
+  <!--    Feed 详情内容-->
+  <%= render(ArticleDetailComponent.new) %>
+
+  <div class="fixed-audio__wrapper" style="display: none;"><!---->
+    <div class="fixed-audio">
+      <div class="fixed-audio__top">
+        <div class="fixed-audio__control-toggle"><i class="iconfont icon-play"></i></div> <!---->
+        <div class="fixed-audio__info">
+          <div class="fixed-audio__title text--ellipsis">
+            --
+          </div>
+          <div class="fixed-audio__time">
+            00:00 / 00:00
+          </div>
+        </div>
+        <div class="fixed-audio__control-collapse"><i class="iconfont icon-right"></i></div>
+      </div>
+      <div role="slider" aria-valuemin="0" aria-valuemax="0" aria-orientation="horizontal" class="el-slider fixed-audio__track" aria-valuetext="0" aria-label="slider between 0 and 0"><!---->
+        <div class="el-slider__runway">
+          <div class="el-slider__bar" style="left: 0%;"></div>
+          <div tabindex="0" class="el-slider__button-wrapper">
+            <div class="el-slider__button el-tooltip" aria-describedby="el-tooltip-7898" tabindex="0"></div>
+          </div><!----></div>
+      </div>
+    </div>
+    <div class="fixed-audio__side fixed-audio__control-close"><i class="iconfont icon-close-heavy"></i></div>
+    <audio id="player" preload="auto" controls="controls" style="display: none;">
+      audio
+    </audio>
+  </div>
+
+  <div>
+    <div class="el-dialog__wrapper" style="display: none;">
+      <div class="el-dialog el-dialog--center" style="width: 500px; margin-top: 30vh;">
+        <div class="el-dialog__header"><span class="el-dialog__title">源信息</span>
+          <button type="button" aria-label="Close" class="el-dialog__headerbtn">
+            <i class="el-dialog__close el-icon el-icon-close"></i></button>
+        </div><!----><!----></div>
+    </div>
+  </div>
+</div>
+
+<!--  Feed 详情内容下拉菜单-->
+<ul class="el-dropdown-menu el-popper" id="dropdown-menu-1877" style="transform-origin: center top; z-index: 2003; display: none;">
+  <li tabindex="-1" class="el-dropdown-menu__item">
+    设为已读(M)
+  </li>
+  <li tabindex="-1" class="el-dropdown-menu__item">
+    进入该订阅源
+  </li>
+  <li tabindex="-1" class="el-dropdown-menu__item">
+    查看源信息
+  </li> <!---->
+  <li tabindex="-1" class="el-dropdown-menu__item el-dropdown-menu__item--divided">
+    保存到印象笔记
+  </li>
+  <div x-arrow="" class="popper__arrow" style="left: 62.5px;"></div>
+</ul>
+
+<div role="tooltip" id="el-popover-4023" aria-hidden="true" class="el-popover el-popper" tabindex="0" style="width: 324px; transform-origin: center top; z-index: 2005; display: none;"><!---->
+  <div class="el-select" style="width: 100%;">
+    <div class="el-select__tags" style="max-width: 266px;"><!----><span></span><input type="text" autocomplete="off" debounce="0" class="el-select__input" style="width: 20px; max-width: 256px;">
+    </div>
+    <div class="el-input el-input--suffix"><!----><input type="text" readonly="readonly" autocomplete="off" placeholder="创建或搜索标签，最多5个" class="el-input__inner" style="height: 40px;"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="el-select__caret el-input__icon el-icon-arrow-up"></i><!----></span><!----></span><!---->
+    </div>
+    <div class="el-select-dropdown el-popper is-multiple" style="display: none; min-width: 0px;">
+      <div class="el-scrollbar" style="">
+        <div class="el-select-dropdown__wrap el-scrollbar__wrap" style="margin-bottom: -15px; margin-right: -15px;">
+          <ul class="el-scrollbar__view el-select-dropdown__list"><!---->
+            <li class="el-select-dropdown__item"><span>Django</span></li>
+          </ul>
+        </div>
+        <div class="el-scrollbar__bar is-horizontal">
+          <div class="el-scrollbar__thumb" style="transform: translateX(0%);"></div>
+        </div>
+        <div class="el-scrollbar__bar is-vertical">
+          <div class="el-scrollbar__thumb" style="transform: translateY(0%);"></div>
+        </div>
+      </div><!----></div>
+  </div>
+  <div class="el-popover__footer">
+    <button type="button" class="el-button el-button--text el-button--mini"><!----><!----><span>
+            取 消
+          </span></button>
+    <button type="button" class="el-button el-button--primary el-button--mini"><!----><!----><span>
+            确 定
+          </span></button>
+  </div>
+  <div x-arrow="" class="popper__arrow" style="left: 154.5px;"></div>
+</div>
+<div role="tooltip" id="el-tooltip-6055" aria-hidden="true" class="el-tooltip__popper is-dark" style="transform-origin: center top; z-index: 2007; display: none;">2021-04-30
+  17:00:01
+  <div x-arrow="" class="popper__arrow" style="left: 61.5px;"></div>
+</div>
+<div role="tooltip" id="el-popover-250" aria-hidden="true" class="el-popover el-popper highlight-popover" tabindex="0" style="width: 150px; transform-origin: center top; z-index: 2009; display: none;"><!---->
+  <div class="flexbox--center"><i class="iconfont icon-forbid"></i> <span class="highlight-block yellow"></span>
+    <span class="highlight-block red"></span> <span class="highlight-block green"></span></div>
+  <div x-arrow="" class="popper__arrow" style="left: 67.5px;"></div>
+</div>

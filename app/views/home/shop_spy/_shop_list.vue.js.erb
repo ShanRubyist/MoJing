@@ -1,121 +1,121 @@
 // shop 的表格组件
-const goods_data = <%= raw(@goods_list.to_json) %>
+//const goods_data = <%#= raw(@goods_list.to_json) %>
 
-    <%= render 'home/shop_spy/details/good_detail.vue.js' %>
-    <%= render 'home/all/history/refresh_history_dialog.vue.js' %>
+    <%#= render 'home/shop_spy/details/good_detail.vue.js' %>
+    <%#= render 'history/refresh_history_dialog.vue.js' %>
 
-    Vue.component('shop-list', {
-        data: function () {
-            return {
-                goods_data,
-                visible: false,
-                show_more: false,
-                current_good: goods_data.first,
-                refresh_history_dialog_visible: false,
-                setting_id: null,
-                type: null,
-            }
-        },
-        methods: {
-            toggle_show_more: function () {
-                this.show_more = !this.show_more
-            },
-            showDetail: function (good) {
-                this.visible = true
-                this.current_good = good
-            },
-            select_tag_color: function (content) {
-                var tag_color = null;
-                switch (content) {
-                    case 'success':
-                        tag_color = 'green';
-                        break;
-                    case 'fail':
-                        tag_color = 'red';
-                        break;
-                    case 'performing':
-                        tag_color = 'yellow';
-                        break;
-                    case 'enqueued':
-                        tag_color = '';
-                        break;
-                    case 'enqueue':
-                        tag_color = 'gray'
-                        break;
-                    default:
-                        break;
-                }
-                return tag_color;
-            },
-            start_job: function (type, id) {
-                var that = this
+//    Vue.component('shop-list', {
+//        data: function () {
+//            return {
+//                goods_data,
+//                visible: false,
+//                show_more: false,
+//                current_good: goods_data.first,
+//                refresh_history_dialog_visible: false,
+//                setting_id: null,
+//                type: null,
+//            }
+//        },
+//        methods: {
+//            toggle_show_more: function () {
+//                this.show_more = !this.show_more
+//            },
+//            showDetail: function (good) {
+//                this.visible = true
+//                this.current_good = good
+//            },
+//            select_tag_color: function (content) {
+//                var tag_color = null;
+//                switch (content) {
+//                    case 'success':
+//                        tag_color = 'green';
+//                        break;
+//                    case 'fail':
+//                        tag_color = 'red';
+//                        break;
+//                    case 'performing':
+//                        tag_color = 'yellow';
+//                        break;
+//                    case 'enqueued':
+//                        tag_color = '';
+//                        break;
+//                    case 'enqueue':
+//                        tag_color = 'gray'
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                return tag_color;
+//            },
+//            start_job: function (type, id) {
+//                var that = this
 
-                axios.post('<%= start_job_path %>', {
-                        type: type,
-                        id: id,
-                        authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(function (reason) {
-                        that.$message.success(reason.data.message)
-                    })
-                    .catch(function (reason) {
-                        that.$message.error(reason.toString())
-                    })
-            },
-            delete_job: function (jid) {
-                var that = this
+//                axios.post('<%= start_job_path %>', {
+//                        type: type,
+//                        id: id,
+//                        authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+//                    },
+//                    {
+//                        headers: {
+//                            'Accept': 'application/json'
+//                        }
+//                    })
+//                    .then(function (reason) {
+//                        that.$message.success(reason.data.message)
+//                    })
+//                    .catch(function (reason) {
+//                        that.$message.error(reason.toString())
+//                    })
+//            },
+//            delete_job: function (jid) {
+//                var that = this
 
-                axios.delete('<%= delete_job_path %>', {
-                    headers: {
-                        'Accept': 'application/json'
-                    },
-                    params: {
-                        jid: jid,
-                        authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
-                    }
-                })
-                    .then(function (reason) {
-                        that.$message.success(reason.data.message)
-                    })
-                    .catch(function (reason) {
-                        that.$message.error(reason.toString())
-                    })
-            },
-            show_history_dialog: function (setting_id) {
-                this.refresh_history_dialog_visible = true
-                this.setting_id = setting_id
-                this.type = 1
-            },
-            delete_setting: function (setting_id) {
-                var that = this;
+//                axios.delete('<%= delete_job_path %>', {
+//                    headers: {
+//                        'Accept': 'application/json'
+//                    },
+//                    params: {
+//                        jid: jid,
+//                        authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+//                    }
+//                })
+//                    .then(function (reason) {
+//                        that.$message.success(reason.data.message)
+//                    })
+//                    .catch(function (reason) {
+//                        that.$message.error(reason.toString())
+//                    })
+//            },
+//            show_history_dialog: function (setting_id) {
+//                this.refresh_history_dialog_visible = true
+//                this.setting_id = setting_id
+//                this.type = 1
+//            },
+//            delete_setting: function (setting_id) {
+//                var that = this;
 
-                this.$confirm({
-                    title: 'Confirm',
-                    content: 'Do you want to delete this item?',
-                    onOk() {
-                        axios.delete('/web_spider_settings/' + setting_id, {
-                            headers: {
-                                'Accept': 'application/json'
-                            },
-                            params: {
-                                authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
-                            }
-                        })
-                            .then(function (reason) {
-                                that.$message.success(reason.data.message)
-                            })
-                            .catch(function (reason) {
-                                that.$message.error(reason.toString())
-                            })
-                    },
-                    onCancel() {},
-                });
-            }
-        },
-        template: '<%= import_partial('home/shop_spy/shop_list_templ') %>'
-    })
+//                this.$confirm({
+//                    title: 'Confirm',
+//                    content: 'Do you want to delete this item?',
+//                    onOk() {
+//                        axios.delete('/web_spider_settings/' + setting_id, {
+//                            headers: {
+//                                'Accept': 'application/json'
+//                            },
+//                            params: {
+//                                authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+//                            }
+//                        })
+//                            .then(function (reason) {
+//                                that.$message.success(reason.data.message)
+//                            })
+//                            .catch(function (reason) {
+//                                that.$message.error(reason.toString())
+//                            })
+//                    },
+//                    onCancel() {},
+//                });
+//            }
+//        },
+//        template: '<%#= import_partial('home/shop_spy/shop_list_templ') %>'
+//    })

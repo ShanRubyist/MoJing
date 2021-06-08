@@ -11,6 +11,11 @@ module TianLuo
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
+    require 'server'
+    config.middleware.use Server
+
+    config.middleware.use Rack::Deflater
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
@@ -44,5 +49,6 @@ module TianLuo
         ssl: ENV['SMTP_SSL']
     }
 
+    config.view_component.preview_paths << "#{Rails.root}/spec/components/previews"
   end
 end

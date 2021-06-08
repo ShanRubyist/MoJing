@@ -1,0 +1,13 @@
+<h1>本月汇总</h1>
+
+<ul>
+  <li>共有注册用户数: <%= @users %></li>
+  <li>未读 rss feed: <%= @rss_feeds %></li>
+  <li>共有 rss 源: <%= @rss_sources %></li>
+</ul>
+
+<span>更多内容请查看<%= link_to "#{ENV['SITE_NAME']}", root_url %></span>
+
+<br />
+
+<span>系统自动发送，请勿回复</span>
