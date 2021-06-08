@@ -1,101 +1,101 @@
 // dialog 组件
-Vue.component('add-dialog', {
-    props: ['dialog_visible'],
-    data: function () {
-        return {
-            dialog_loading: false,
-            new_form_data: {
-                step: 0,
-                type: 0,
-                url: null,
-                port: 80,
-                retry_limit: null,
-                proxy: null,
-                status: true,
-                cookies: ''
-            }
-        }
-    },
-    computed: {
-      visible: {
-          get: function () {
-              return this.dialog_visible;
-          },
-          set: function (val) {
-              this.$emit('close-dialog');
-          }
-      }
-    },
-    methods: {
-        handleCancel: function () {
-            this.visible = false;
-            this.dialog_loading = false;
-        },
-        handleOk: function () {
-            this.dialog_loading = true;
+//Vue.component('add-dialog', {
+//    props: ['dialog_visible'],
+//    data: function () {
+//        return {
+//            dialog_loading: false,
+//            new_form_data: {
+//                step: 0,
+//                type: 0,
+//                url: null,
+//                port: 80,
+//                retry_limit: null,
+//                proxy: null,
+//                status: true,
+//                cookies: ''
+//            }
+//        }
+//    },
+//    computed: {
+//      visible: {
+//          get: function () {
+//              return this.dialog_visible;
+//          },
+//          set: function (val) {
+//              this.$emit('close-dialog');
+//          }
+//      }
+//    },
+//    methods: {
+//        handleCancel: function () {
+//            this.visible = false;
+//            this.dialog_loading = false;
+//        },
+//        handleOk: function () {
+//            this.dialog_loading = true;
 
-            var that = this;
-            var url = '';
-            var setting = {};
-            if (this.new_form_data.type == 1) {
-                url = '<%= probe_settings_url %>';
-                setting = {
-                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
-                    probe_setting: {
-                        user_id: <%= current_user.id %>,
-                        url: that.new_form_data.url,
-                        port: that.new_form_data.port,
-                        retry_limit: that.new_form_data.retry_limit,
-                        proxy: that.new_form_data.proxy,
-                        cookies: that.new_form_data.cookies,
-                        status: that.new_form_data.status
-                    }
-                }
-            } else if (this.new_form_data.type == 2) {
-                url = '<%= web_spider_settings_url %>';
-                setting = {
-                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
-                    web_spider_setting: {
-                        user_id: <%= current_user.id %>,
-                        url: that.new_form_data.url,
-                        port: that.new_form_data.port,
-                        retry_limit: that.new_form_data.retry_limit,
-                        proxy: that.new_form_data.proxy,
-                        cookies: that.new_form_data.cookies,
-                        status: that.new_form_data.status
-                    }
-                }
-            }
-            axios.post(url, setting, {
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(function (reason) {
-                that.$message.success(reason.data.message);
-                that.dialog_loading = false;
-                that.visible = false;
+//            var that = this;
+//            var url = '';
+//            var setting = {};
+//            if (this.new_form_data.type == 1) {
+//                url = '<%= probe_settings_url %>';
+//                setting = {
+//                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+//                    probe_setting: {
+//                        user_id: <%#= current_user.id %>,
+//                        url: that.new_form_data.url,
+//                        port: that.new_form_data.port,
+//                        retry_limit: that.new_form_data.retry_limit,
+//                        proxy: that.new_form_data.proxy,
+//                        cookies: that.new_form_data.cookies,
+//                        status: that.new_form_data.status
+//                    }
+//                }
+//            } else if (this.new_form_data.type == 2) {
+//                url = '<%= web_spider_settings_url %>';
+//                setting = {
+//                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+//                    web_spider_setting: {
+//                        user_id: <%#= current_user.id %>,
+//                        url: that.new_form_data.url,
+//                        port: that.new_form_data.port,
+//                        retry_limit: that.new_form_data.retry_limit,
+//                        proxy: that.new_form_data.proxy,
+//                        cookies: that.new_form_data.cookies,
+//                        status: that.new_form_data.status
+//                    }
+//                }
+//            }
+//            axios.post(url, setting, {
+//                headers: {
+//                    'Accept': 'application/json'
+//                }
+//            }).then(function (reason) {
+//                that.$message.success(reason.data.message);
+//                that.dialog_loading = false;
+//                that.visible = false;
 
-                that.clear_new_form_data();
-            }).catch(function (reason) {
-                that.$message.error(reason.toString());
-                that.dialog_loading = false;
-            })
-        },
-        clear_new_form_data: function () {
-            this.new_form_data = {
-                step: 0,
-                type: 0,
-                url: null,
-                port: 80,
-                retry_limit: null,
-                proxy: null,
-                status: true,
-                cookies: ''
-            }
-        },
-        next_step: function () {
-            this.new_form_data.step += 1;
-        }
-    },
-    template: '<%= import_partial('home/new/add_dialog') %>'
-})
+//                that.clear_new_form_data();
+//            }).catch(function (reason) {
+//                that.$message.error(reason.toString());
+//                that.dialog_loading = false;
+//            })
+//        },
+//        clear_new_form_data: function () {
+//            this.new_form_data = {
+//                step: 0,
+//                type: 0,
+//                url: null,
+//                port: 80,
+//                retry_limit: null,
+//                proxy: null,
+//                status: true,
+//                cookies: ''
+//            }
+//        },
+//        next_step: function () {
+//            this.new_form_data.step += 1;
+//        }
+//    },
+//    template: '<%#= import_partial('home/new/add_dialog') %>'
+//})

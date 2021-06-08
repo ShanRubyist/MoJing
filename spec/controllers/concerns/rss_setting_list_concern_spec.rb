@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe RSSSettingListConcern do
+RSpec.describe RunningJosbsCountable do
   let(:test_obj) {
     Class.new do
-      include RSSSettingListConcern
+      include RunningJosbsCountable
     end.new
   }
 

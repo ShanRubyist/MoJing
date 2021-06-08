@@ -1,6 +1,6 @@
 <div>
 
-    <a-button @click="this.window.location.href = \'all\' ">
+    <a-button @click="this.window.location.href = \'rss\' ">
         查看全部RSS
     </a-button>
 
@@ -22,7 +22,8 @@
                 </a-tooltip>
             </p>
 
-            <p class="rss-list-content">{{rss.description.substring(0, 1000)}}</p>
+            <p class="rss-list-content" v-html="rss.description.substring(0, 1000)">
+            </p>
 
             <p class="rss-list-footer">
                 <a-tooltip placement="top">

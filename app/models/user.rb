@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-  has_many :probe_settings
+  has_many :user_rss_ships
+  has_many :probe_settings, :through => :user_rss_ships
+
   has_many :pdd_web_spider_settings
 
   has_many :user_rss_feed_ships

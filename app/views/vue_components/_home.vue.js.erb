@@ -1,0 +1,23 @@
+<script>
+  <%= render 'vue_components/rss_list.vue.js' %>
+  <%= render 'vue_components/goods_list.vue.js' %>
+  <%= render 'vue_components/add_dialog.vue.js' %>
+
+    var app = new Vue({
+    el: '#app',
+    data: {
+    dialog_visible: false,
+    unread_count: 0,
+},
+    methods: {
+    show_add_dialog: function () {
+    // 需要先置为 false，再设置为 true 才能再次显示添加的对话框
+    this.dialog_visible = false;
+    this.dialog_visible = true;
+},
+    mounted: function () {
+    window.addEventListener('scroll', this.handleScroll);
+}
+}
+})
+</script>

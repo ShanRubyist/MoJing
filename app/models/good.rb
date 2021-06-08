@@ -7,5 +7,5 @@ class Good < ApplicationRecord
   has_many :skus
   has_many :goods_extras
 
-  include SaveGoodsConcern
+  include GoodsSavable
 end

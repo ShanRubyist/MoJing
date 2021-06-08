@@ -1,0 +1,143 @@
+<script>
+  <%= render 'vue_components/add_dialog.vue.js' %>
+
+    var app = new Vue({
+    el: '#app',
+    data: {
+    dialog_visible: false,
+    unread_count: 0,
+    cat_wrapper_visible: true,
+    rss_list_json:
+    <% rst = @rss_list.map do |rss| %>
+    <% {
+           title: rss.title,
+           description: Loofah.fragment(rss.description).scrub!(:escape).to_html,
+           pub_date: rss.pub_date.nil? ? '' : rss.pub_date.localtime.strftime("%Y-%m-%d %H:%M"),
+           author: rss.author,
+           link: rss.link,
+           rss: rss.probe_setting.rss_info.title,
+           rss_link: rss.probe_setting.rss_info.link,
+           rss_description: rss.probe_setting.rss_info.description,
+           icon: rss.probe_setting.rss_info.icon,
+           status: !rss.user_rss_feed_ships.first.unread
+       }
+    %>
+    <% end %>
+    <%= raw(rst.to_json) %>,
+    all_rss_list_json:
+    <% rst = @all_rss_list_json.map do |rss| %>
+    <% {
+            probe_settings_id: rss[:probe_settings_id],
+            rss: rss[:rss],
+            port: rss[:port],
+            proxy: rss[:proxy],
+            latest_updated: rss[:latest_updated],
+            status: rss[:status],
+            jid: rss[:jid],
+            detail: rss[:detail],
+            title: rss[:title],
+            description: rss[:description],
+            unread_count: rss[:unread_count]
+       }
+    %>
+    <% end %>
+    <%= raw(rst.to_json) %>,
+    current_article: <%= raw(@rss_list.first.to_json) %>,
+    current_rss: null,
+    qrcode: null,
+    full_screen: false
+
+},
+    methods: {
+        full_screen_mode: function () {
+          this.full_screen = !this.full_screen
+    },
+    mark_readed: function () {
+            var that = this;
+            axios.put(window.location.href + 'rss_feeds/mark_readed',
+                {
+                    user_id: <%= current_user.id %>,
+                    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content')
+                },
+                {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(function (reason) {
+                    that.$message.success(reason.data.message)
+                })
+                .catch(function (reason) {
+                    that.$message.error(reason.toString());
+                })
+},
+    show_add_dialog: function () {
+    // 需要先置为 false，再设置为 true 才能再次显示添加的对话框
+    this.dialog_visible = false;
+    this.dialog_visible = true;
+},
+    create_qr_code: function(url) {
+//        this.qrcode.clear
+//    if(this.qrcode == null) {
+//    this.qrcode = this.$refs.qrcode2
+//}
+    if(this.$refs.qrcode != null){
+    this.$refs.qrcode.innerHTML = ''
+}
+    console.log(this.qrcode)
+    this.qrcode = new QRCode(this.$refs.qrcode, {
+    text: url,
+    width: 100,
+    height: 100,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+})
+},
+    toggle_cat_wrapper: function() {
+        this.cat_wrapper_visible = !this.cat_wrapper_visible
+},
+    change_article: function(article){
+        this.current_article = article
+},
+    change_rss: function(rss){
+        this.current_rss = rss
+    var that = this;
+    axios.get('<%= rss_feed_rss_list_path %>', {
+    headers: {
+    'Accept': 'application/json'
+},
+    params: {
+    rss: rss,
+}
+}).then(function (reason) {
+    that.rss_list_json = reason.data
+    that.current_article = reason.data[0]
+}).catch(function (reason) {
+    that.$message.error(reason.toString());
+})
+
+},
+    refresh_feeds: function(type) {
+        var that = this;
+    axios.post('<%= start_all_job_path %>', {
+    type: type,
+    authenticity_token: document.getElementsByName("csrf-token")[0].getAttribute('content'),
+},
+{
+    headers: {
+    'Accept': 'application/json'
+}
+})
+    .then(function (reason) {
+    that.$message.success(reason.data.message)
+})
+    .catch(function (reason) {
+    that.$message.error(reason.toString())
+})
+}
+},
+    mounted: function () {
+}
+})
+</script>

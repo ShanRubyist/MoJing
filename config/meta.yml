@@ -1,0 +1,4 @@
+meta_title: ENV['SITE_NAME']
+meta_description: "description"
+meta_keywords: "keywords"
+meta_image: "logo.png"

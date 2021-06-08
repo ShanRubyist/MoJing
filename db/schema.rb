@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_19_073431) do
+ActiveRecord::Schema.define(version: 2021_06_04_152004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,11 +171,10 @@ ActiveRecord::Schema.define(version: 2020_11_19_073431) do
     t.string "proxy", comment: "代理服务器"
     t.string "log_path", comment: "日志文件名"
     t.boolean "status", default: true, comment: "服务开关: 开启才会抓取"
-    t.integer "user_id", null: false, comment: "用户ID"
+    t.integer "user_id", comment: "用户ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["url"], name: "index_probe_settings_on_url"
-    t.index ["user_id"], name: "index_probe_settings_on_user_id"
   end
 
   create_table "rss_feeds", force: :cascade do |t|
@@ -187,7 +186,21 @@ ActiveRecord::Schema.define(version: 2020_11_19_073431) do
     t.integer "rss_probe_history_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "probe_setting_id"
+    t.index ["probe_setting_id", "link"], name: "index_rss_feeds_on_probe_setting_id_and_link"
+    t.index ["probe_setting_id"], name: "index_rss_feeds_on_probe_setting_id"
     t.index ["rss_probe_history_id"], name: "index_rss_feeds_on_rss_probe_history_id"
+  end
+
+  create_table "rss_infos", force: :cascade do |t|
+    t.integer "probe_setting_id", null: false
+    t.string "title", comment: "RSS源标题"
+    t.string "link", comment: "RSS源网站链接"
+    t.string "description", comment: "RSS源描述"
+    t.string "icon", comment: "RSS源图标"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["probe_setting_id"], name: "index_rss_infos_on_probe_setting_id"
   end
 
   create_table "rss_probe_failure_histories", force: :cascade do |t|
@@ -265,7 +278,18 @@ ActiveRecord::Schema.define(version: 2020_11_19_073431) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["rss_feed_id"], name: "index_user_rss_feed_ships_on_rss_feed_id"
+    t.index ["user_id", "rss_feed_id"], name: "index_user_rss_feed_ships_on_user_id_and_rss_feed_id", unique: true
     t.index ["user_id"], name: "index_user_rss_feed_ships_on_user_id"
+  end
+
+  create_table "user_rss_ships", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "probe_setting_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["probe_setting_id"], name: "index_user_rss_ships_on_probe_setting_id"
+    t.index ["user_id", "probe_setting_id"], name: "index_user_rss_ships_on_user_id_and_probe_setting_id", unique: true
+    t.index ["user_id"], name: "index_user_rss_ships_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

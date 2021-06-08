@@ -35,7 +35,7 @@ class WebSpiderWorkJob < ApplicationJob
                                    proxy: setting.proxy,
                                    retry_limit: setting.retry_limit,
                                    log_path: setting.log_path,
-                                   cookies: setting.cookies).parse
+                                   cookies: setting.cookies).fetch
 
     # 保存商品信息到数据库
     Good.store_goods_to_db(setting, data)

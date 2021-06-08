@@ -1,6 +1,7 @@
 class ProbeSettingsController < ApplicationController
   def create
     @probe_setting = ProbeSetting.new(probe_setting_params)
+    @probe_setting.users = [current_user]
 
     respond_to do |format|
       if @probe_setting.save

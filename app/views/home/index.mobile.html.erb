@@ -1,0 +1,13 @@
+<div id="app">
+  <%= render(HomeComponent.new) do %>
+    <%#= render(RssListComponent.new(rss_list: @rss_list, current_user: current_user)) do %>
+    <%# end %>
+
+    <%#= render(GoodsListComponent.new(goods_list: @goods_list)) do %>
+    <%# end %>
+
+    <%#= render(AddDiaglogComponent.new(current_user: current_user)) %>
+  <% end %>
+</div>
+
+<%= render partial: 'vue_components/home.vue.js' %>

@@ -10,32 +10,30 @@ RSpec.describe HomeController, type: :controller do
         expect(response).to have_http_status(:success)
       end
 
+      it 'return result with params' do
+        obj = double('')
+        allow(obj).to receive(:abc).with("123").and_return('result')
+        expect(obj.abc('123')).to eq 'result'
+      end
+
+      it 'has correct response headers' do
+        get :index
+        expect(response.headers['X-Frame-Options']).to eq 'SAMEORIGIN'
+        expect(response.headers['Content-Type']).to match(/text\/html; charset=utf-8/)
+      end
+
+      it 'has correct ENV' do
+        stub_const("ENV", "RACK_ENV" => "test")
+        expect(ENV['RACK_ENV']).to eq 'test'
+      end
+
+      it 'assigns the requested rss list to @rss_list' do
+        # expect(assigns(:rss_list)).to eq rss_list
+      end
+
       it "renders the :index view" do
         get :index
-        expect(response).to render_template(:index)
-      end
-    end
-
-    describe 'GET #all' do
-      it 'access to all path' do
-        get :all
-        expect(response).to render_template("all/all")
-      end
-    end
-
-    describe 'GET #running_jobs_count' do
-      it 'return running jobs count' do
-        get :running_jobs_count, params: { format: 'json' }
-        expect(response.content_type).to eq('application/json')
-        expect(response.body).to match(/.*running_rss_jobs_count.*running_goods_jobs_count.*/)
-      end
-    end
-
-    describe 'GET #histories' do
-      it 'proxy to rss histories' do
-        spy_controller = spy(controller)
-        get :histories, params: { type: 0, setting_id: 1 }
-        # expect(spy_controller).to have_received(:rss_histories)
+        expect(response).to render_template('index.web')
       end
     end
   end
